@@ -1,0 +1,42 @@
+.news {
+  margin-top: $distance-1;
+}
+
+.news-container {
+  min-height: 100px;
+  position: relative;
+}
+
+.news-article {
+  position: relative;
+  margin-top: 16px;
+}
+
+.news-article-link {
+  display: flex;
+  text-decoration: none;
+  color: black;
+}
+
+.news-article-additional-content {
+  width: 50%;
+  max-width: 300px;
+  border: 1px solid gray;
+  background-color: lightgray;
+}
+
+.news-article-main-content {
+  margin-left: 32px;
+  flex: 1;
+  max-width: 600px;
+}
+
+.news-article-img {
+  max-width: 100%;
+  height: auto;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+

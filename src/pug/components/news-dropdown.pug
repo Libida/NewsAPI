@@ -1,0 +1,9 @@
+- const newsCategories = require("../../json/news-categories")
+
+    select.select.select-css#news-categories
+        each newsCategory, index in newsCategories
+            - const attrs = {};
+                if index == 0
+                    - attrs.disabled = "disabled";
+                    - attrs.selected = "true";
+            option(value=newsCategory)&attributes(attrs)=newsCategory

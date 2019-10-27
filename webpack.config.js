@@ -15,6 +15,7 @@ const devMode = process.env.NODE_ENV !== 'production';
  *
  */
 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -38,7 +39,11 @@ module.exports = {
 
 	plugins: [
 		new webpack.ProgressPlugin(),
-		new HtmlWebpackPlugin(),
+		new CleanWebpackPlugin(),
+		new HtmlWebpackPlugin({
+			template: './src/pug/start.pug',
+			title: 'Page Title'
+		}),
 		new MiniCssExtractPlugin({
 			filename: devMode ? '[name].css' : '[name].[hash].css',
 			chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
@@ -80,6 +85,10 @@ module.exports = {
 					'postcss-loader',
 					'sass-loader',
 				],
+			},
+			{
+				test: /\.pug$/,
+				use: ["pug-loader"]
 			},
 		]
 	},

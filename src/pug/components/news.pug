@@ -1,0 +1,11 @@
+include spinner
+
+article.news
+    h2.news-heading News by categories
+    p Could you please select news category which is interesting for you
+
+    include news-dropdown
+
+    .news-container
+        +spinner#news-spinner
+        .news-container-inner#news-container
