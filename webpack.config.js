@@ -73,12 +73,12 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.(sa|sc|c)ss$/,
+				test: /\.(sa|sc)ss$/,
 				use: [
 					{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
-							hmr: devMode,
+							publicPath: "../",
 						},
 					},
 					'css-loader',

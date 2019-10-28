@@ -1,15 +1,19 @@
-# 🚀 Welcome to your new awesome project!
+# 🚀 News API homework for FrontCamp 2019
 
-This project has been created using **webpack scaffold**, you can now run
-
-```
-npm run build
-```
-
-or
+**Run server using start task
 
 ```
-yarn build
+webpack-dev-server
 ```
 
-to bundle your application
+** Compile project in a development mode
+
+```
+webpack --mode=development
+```
+
+** Compile project in a production mode
+
+```
+webpack --mode=production
+```
