@@ -1,5 +1,10 @@
 # 🚀 News API homework for FrontCamp 2019
 
+Install the dependencies for client side:
+```
+npm install
+```
+
 Run server using a start task
 
 ```
