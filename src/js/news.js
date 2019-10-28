@@ -1,36 +1,38 @@
-import {CONSTANTS} from "./constants";
+import {HIDDEN_CLASS, NEWS_CONTAINER_ID, NEWS_SPINNER_ID, NO_IMG_URL} from "./constants";
 
-function updateNews(category) {
+
+const updateNews = (category) => {
     startLoading();
-    // Add delay to enjoy spinner ;)
+    // Add delay to enjoy a spinner ;)
     setTimeout(() => {
         getNews(category);
         finishLoading();
     }, 500);
-}
+};
 
-function startLoading() {
-    document.getElementById(CONSTANTS.NEWS_CONTAINER).innerHTML = "";
-    const spinner = document.getElementById(CONSTANTS.NEWS_SPINNER);
-    spinner.classList.remove(CONSTANTS.HIDDEN);
-}
+const startLoading = _ => {
+    document.getElementById(NEWS_CONTAINER_ID).innerHTML = "";
+    const spinner = document.getElementById(NEWS_SPINNER_ID);
+    spinner.classList.remove(HIDDEN_CLASS);
+};
 
-function finishLoading() {
-    const spinner = document.getElementById(CONSTANTS.NEWS_SPINNER);
-    spinner.classList.add(CONSTANTS.HIDDEN);
-}
+const finishLoading = _ => {
+    const spinner = document.getElementById(NEWS_SPINNER_ID);
+    spinner.classList.add(HIDDEN_CLASS);
+};
 
-function setNews(newsArticles) {
-    const newsContainer = document.getElementById(CONSTANTS.NEWS_CONTAINER);
+const setNews = (newsArticles) => {
+    const newsContainer = document.getElementById(NEWS_CONTAINER_ID);
     let markup;
 
     for (let i in newsArticles) {
         const {url, urlToImage, title, description} =  newsArticles[i];
+
         markup = `
             <article class="news-article">
                 <a class="news-article-link" href="${url}" target="_blank">
                     <div class="news-article-additional-content">
-                        <img class="news-article-img" src="${urlToImage || CONSTANTS.NO_IMG_URL}" alt="${title}">
+                        <img class="news-article-img" src="${urlToImage || NO_IMG_URL}" alt="${title}">
                     </div>
                     <div class="news-article-main-content">
                         <h3 class="news-article-title">${title}</h3>
@@ -42,11 +44,11 @@ function setNews(newsArticles) {
 
         newsContainer.insertAdjacentHTML("beforeend", markup);
     }
-}
+};
 
-async function getNews(category) {
-    let articles = [];
-    let url = `https://newsapi.org/v2/everything?q=${category}&from=2019-10-24&to=2019-10-24&sortBy=popularity&apiKey=a1e2ae38e5ff42f1aa3175998837d6ca`;
+const getNews = async (category) => {
+    const articles = [];
+    const url = `https://newsapi.org/v2/everything?q=${category}&from=2019-10-24&to=2019-10-24&sortBy=popularity&apiKey=a1e2ae38e5ff42f1aa3175998837d6ca`;
 
     let job = fetch(url).then(
         successResponse => {
@@ -63,10 +65,10 @@ async function getNews(category) {
 
     articles.push(job);
 
-    let results = await Promise.all(articles);
-    let finalArticles = results[0].articles;
+    const results = await Promise.all(articles);
+    const finalArticles = results[0].articles;
 
     setNews(finalArticles);
-}
+};
 
 export { updateNews };

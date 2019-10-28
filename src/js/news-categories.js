@@ -1,13 +1,13 @@
-import {CONSTANTS} from "./constants";
+import {NEWS_CATEGORIES_DROPDOWN_ID} from "./constants";
 import {updateNews} from "./news";
 
-function createNewsCategoriesList() {
-    const selectList = document.getElementById(CONSTANTS.NEWS_CATEGORIES_DROPDOWN_ID);
+const createNewsCategoriesList = _ => {
+    const selectList = document.getElementById(NEWS_CATEGORIES_DROPDOWN_ID);
     selectList.addEventListener("change", updateValue);
-}
+};
 
-function updateValue(e) {
+const updateValue = (e) => {
     updateNews(e.target.value);
-}
+};
 
 export {createNewsCategoriesList};
