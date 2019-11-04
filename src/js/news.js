@@ -1,4 +1,5 @@
 import {HIDDEN_CLASS, NEWS_CONTAINER_ID, NEWS_SPINNER_ID, NO_IMG_URL} from "./constants";
+import ErrorModal from "./error-modal";
 
 
 const updateNews = (category) => {
@@ -59,14 +60,15 @@ const getNews = async (category) => {
             }
         },
         failResponse => {
-            return null;
+            const errorModal = new ErrorModal();
+            console.dir(errorModal);
         }
     );
 
     articles.push(job);
 
-    const results = await Promise.all(articles);
-    const finalArticles = results[0].articles;
+    const results = await Promise.all(articles) || [];
+    const finalArticles = results[0] && results[0].articles;
 
     setNews(finalArticles);
 };
