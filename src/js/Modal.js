@@ -28,7 +28,9 @@ class Modal {
             this.errorClose.addEventListener("click", this.close.bind(this));
         }
 
-        this.setText(text);
+        instance.setText(text);
+
+        return instance;
     }
 
     open() {
