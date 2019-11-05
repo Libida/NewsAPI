@@ -1,0 +1,33 @@
+.modal {
+  width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: $distance-2;
+  background: #ffffff;
+  box-shadow: 0 2px 11px 0 #E4E4E4;
+  z-index: $z-index-backdrop + 1;
+}
+
+.modal-heading-close {
+  position: absolute;
+  top: $distance-2;
+  right: $distance-2;
+}
+
+.modal-close {
+  color: #aaa;
+  line-height: 50px;
+  font-size: 80%;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 70px;
+  text-decoration: none;
+
+  &:hover {
+    color: black;
+  }
+}

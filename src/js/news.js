@@ -1,5 +1,5 @@
 import {HIDDEN_CLASS, NEWS_CONTAINER_ID, NEWS_SPINNER_ID, NO_IMG_URL} from "./constants";
-import ErrorModal from "./error-modal";
+import Modal from "./Modal";
 
 
 const updateNews = (category) => {
@@ -60,8 +60,8 @@ const getNews = async (category) => {
             }
         },
         failResponse => {
-            const errorModal = new ErrorModal();
-            console.dir(errorModal);
+            const errorModal = new Modal("Couldn't get news, could you please try a bit later.");
+            errorModal.open();
         }
     );
 
