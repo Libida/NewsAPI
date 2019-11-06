@@ -9,6 +9,8 @@ class Backdrop {
             document.body.insertAdjacentHTML("beforeend", `<div class="backdrop hidden" id="${BACKDROP_ID}"></div>`);
             this.backdrop = document.getElementById(BACKDROP_ID);
         }
+
+        return instance;
     }
 
     show() {

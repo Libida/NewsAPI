@@ -60,6 +60,7 @@ const getNews = async (category) => {
             }
         },
         failResponse => {
+            // TODO: throw new Modal
             const errorModal = new Modal("Couldn't get news, could you please try a bit later.");
             errorModal.open();
         }
