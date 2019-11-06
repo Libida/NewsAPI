@@ -1,4 +1,4 @@
 import "../scss/style.scss";
-import {createNewsCategoriesList} from "./news-categories";
+import News from "./news/News";
 
-createNewsCategoriesList();
+new News();
