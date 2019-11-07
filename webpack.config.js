@@ -1,6 +1,6 @@
-const path = require('path');
-const webpack = require('webpack');
-const devMode = process.env.NODE_ENV !== 'production';
+const path = require("path");
+const webpack = require("webpack");
+const devMode = process.env.NODE_ENV !== "production";
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -15,9 +15,10 @@ const devMode = process.env.NODE_ENV !== 'production';
  *
  */
 
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ghpages = require("gh-pages");
 
 /*
  * We've enabled HtmlWebpackPlugin for you! This generates a html
@@ -29,24 +30,24 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
  */
 
 module.exports = {
-	mode: 'development',
-	entry: './src/js/app',
+	mode: "development",
+	entry: "./src/js/app",
 
 	output: {
-		filename: '[name].[chunkhash].js',
-		path: path.resolve(__dirname, 'dist')
+		filename: "[name].js",
+		path: path.resolve(__dirname, "dist")
 	},
 
 	plugins: [
 		new webpack.ProgressPlugin(),
 		new CleanWebpackPlugin(),
 		new HtmlWebpackPlugin({
-			template: './src/pug/start.pug',
-			title: 'Page Title'
+			template: "./src/pug/start.pug",
+			title: "Page Title"
 		}),
 		new MiniCssExtractPlugin({
-			filename: devMode ? '[name].css' : '[name].[hash].css',
-			chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+			filename: "[name].css",
+			chunkFilename: "[id].css",
 		}),
 	],
 
@@ -54,15 +55,15 @@ module.exports = {
 		rules: [
 			{
 				test: /.(js|jsx)$/,
-				include: [path.resolve(__dirname, 'src/js')],
-				loader: 'babel-loader',
+				include: [path.resolve(__dirname, "src/js")],
+				loader: "babel-loader",
 
 				options: {
-					plugins: ['syntax-dynamic-import'],
+					plugins: ["syntax-dynamic-import"],
 
 					presets: [
 						[
-							'@babel/preset-env',
+							"@babel/preset-env",
 							{
 								"targets": {
 									"node": "10"
@@ -81,9 +82,9 @@ module.exports = {
 							publicPath: "../",
 						},
 					},
-					'css-loader',
-					'postcss-loader',
-					'sass-loader',
+					"css-loader",
+					"postcss-loader",
+					"sass-loader",
 				],
 			},
 			{
@@ -102,7 +103,7 @@ module.exports = {
 				}
 			},
 
-			chunks: 'async',
+			chunks: "async",
 			minChunks: 1,
 			minSize: 30000,
 			name: true
@@ -113,3 +114,5 @@ module.exports = {
 		open: true
 	}
 };
+
+ghpages.publish('dist', function(err) {});
