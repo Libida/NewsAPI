@@ -12,6 +12,7 @@ class Modal {
         }
 
         instance.view.setText(text);
+        instance.controller.open();
 
         return instance;
     }

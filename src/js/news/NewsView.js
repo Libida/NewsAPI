@@ -26,6 +26,16 @@ class NewsView {
             </article>
             `;
     }
+
+    appendNews(newsArticles) {
+        for (let i in newsArticles) {
+            this.container.insertAdjacentHTML("beforeend", this.getNewsArticleMarkup(newsArticles[i]));
+        }
+    }
+
+    clearNews() {
+        this.container.innerHTML = "";
+    }
 }
 
 export default NewsView;

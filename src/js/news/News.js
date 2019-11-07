@@ -4,10 +4,10 @@ import NewsController from "./NewsController";
 import NewsModel from "./NewsModel";
 
 class News {
-    constructor() {
+    constructor(options) {
         this.model = new NewsModel();
         this.view = new NewsView();
-        this.controller = new NewsController(this.model, this.view);
+        this.controller = new NewsController(this.model, this.view, options);
     }
 }
 
