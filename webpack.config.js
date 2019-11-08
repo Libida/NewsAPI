@@ -15,7 +15,7 @@ const devMode = process.env.NODE_ENV !== "production";
  *
  */
 
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ghpages = require("gh-pages");
@@ -30,89 +30,90 @@ const ghpages = require("gh-pages");
  */
 
 module.exports = {
-	mode: "development",
-	entry: "./src/js/app",
+    mode: "development",
+    entry: "./src/js/app",
 
-	output: {
-		filename: "[name].js",
-		path: path.resolve(__dirname, "dist")
-	},
+    output: {
+        filename: "[name].js",
+        path: path.resolve(__dirname, "dist")
+    },
 
-	plugins: [
-		new webpack.ProgressPlugin(),
-		new CleanWebpackPlugin(),
-		new HtmlWebpackPlugin({
-			template: "./src/pug/start.pug",
-			title: "Page Title"
-		}),
-		new MiniCssExtractPlugin({
-			filename: "[name].css",
-			chunkFilename: "[id].css",
-		}),
-	],
+    plugins: [
+        new webpack.ProgressPlugin(),
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: "./src/pug/start.pug",
+            title: "Page Title"
+        }),
+        new MiniCssExtractPlugin({
+            filename: "[name].css",
+            chunkFilename: "[id].css",
+        }),
+    ],
 
-	module: {
-		rules: [
-			{
-				test: /.(js|jsx)$/,
-				include: [path.resolve(__dirname, "src/js")],
-				loader: "babel-loader",
+    module: {
+        rules: [
+            {
+                test: /.(js|jsx)$/,
+                include: [path.resolve(__dirname, "src/js")],
+                loader: "babel-loader",
 
-				options: {
-					plugins: ["syntax-dynamic-import"],
+                options: {
+                    plugins: ["syntax-dynamic-import"],
 
-					presets: [
-						[
-							"@babel/preset-env",
-							{
-								"targets": {
-									"node": "10"
-								}
-							}
-						]
-					]
-				}
-			},
-			{
-				test: /\.(sa|sc)ss$/,
-				use: [
-					{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							publicPath: "../",
-						},
-					},
-					"css-loader",
-					"postcss-loader",
-					"sass-loader",
-				],
-			},
-			{
-				test: /\.pug$/,
-				use: ["pug-loader"]
-			},
-		]
-	},
+                    presets: [
+                        [
+                            "@babel/preset-env",
+                            {
+                                "targets": {
+                                    "node": "10"
+                                }
+                            }
+                        ]
+                    ]
+                }
+            },
+            {
+                test: /\.(sa|sc)ss$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: "../",
+                        },
+                    },
+                    "css-loader",
+                    "postcss-loader",
+                    "sass-loader",
+                ],
+            },
+            {
+                test: /\.pug$/,
+                use: ["pug-loader"]
+            },
+        ]
+    },
 
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				vendors: {
-					priority: -10,
-					test: /[\\/]node_modules[\\/]/
-				}
-			},
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendors: {
+                    priority: -10,
+                    test: /[\\/]node_modules[\\/]/
+                }
+            },
 
-			chunks: "async",
-			minChunks: 1,
-			minSize: 30000,
-			name: true
-		}
-	},
+            chunks: "async",
+            minChunks: 1,
+            minSize: 30000,
+            name: true
+        }
+    },
 
-	devServer: {
-		open: true
-	}
+    devServer: {
+        open: true
+    }
 };
 
-ghpages.publish('dist', function(err) {});
+ghpages.publish('dist', function (err) {
+});

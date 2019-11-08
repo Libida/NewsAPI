@@ -19,7 +19,10 @@ class NewsController {
     async updateNews(e) {
         this.view.spinner.controller.startLoading(this.view.clearNews.bind(this.view));
 
-        const promise = this.model.getNews(e.target.value);
+        const promise = this.model.getNews(e.target.value, {
+            withDebug: true,
+            method: "GET"
+        });
         const results = await promise || {};
         this.view.appendNews(results.articles);
 
