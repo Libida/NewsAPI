@@ -86,6 +86,18 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/js/ajax/AJAX.js":
+/*!*****************************!*\
+  !*** ./src/js/ajax/AJAX.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modal/Modal */ \"./src/js/modal/Modal.js\");\n\n\nclass AJAX {\n  constructor(url, options = {}) {\n    this.promiseRequest = this.makeRequest(url, options);\n  }\n\n  async makeRequest(url, options) {\n    let promise = fetch(url, options);\n    return promise;\n  }\n\n  async waitForRequest(callback) {\n    try {\n      let response = await this.promiseRequest;\n      const finalResponse = callback ? callback(response) : response;\n      return finalResponse;\n    } catch (error) {\n      new _modal_Modal__WEBPACK_IMPORTED_MODULE_0__[\"default\"](error);\n    }\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (AJAX);\n\n//# sourceURL=webpack:///./src/js/ajax/AJAX.js?");
+
+/***/ }),
+
 /***/ "./src/js/app.js":
 /*!***********************!*\
   !*** ./src/js/app.js ***!
@@ -250,7 +262,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _con
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modal/Modal */ \"./src/js/modal/Modal.js\");\n\n\nclass NewsModel {\n  async getNews(category) {\n    const url = `https://newsapi.org/v2/everything?q=${category}&sortBy=popularity&apiKey=a1e2ae38e5ff42f1aa3175998837d6ca&from=2019-10-24&to=2019-10-24`;\n    let promise = fetch(url).then(successResponse => {\n      if (successResponse.status != 200) {\n        throw new SyntaxError(\"Empty results from the NEWS API server\");\n      } else {\n        return successResponse.json();\n      }\n    }).catch(error => {\n      new _modal_Modal__WEBPACK_IMPORTED_MODULE_0__[\"default\"](error);\n    });\n    return promise;\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (NewsModel);\n\n//# sourceURL=webpack:///./src/js/news/NewsModel.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modal/Modal */ \"./src/js/modal/Modal.js\");\n/* harmony import */ var _ajax_AJAX__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ajax/AJAX */ \"./src/js/ajax/AJAX.js\");\n\n\n\nclass NewsModel {\n  async getNews(category, options) {\n    const url = `https://newsapi.org/v2/everything?q=${category}&sortBy=popularity&apiKey=a1e2ae38e5ff42f1aa3175998837d6ca&from=2019-10-24&to=2019-10-24`;\n    const ajaxRequest = new _ajax_AJAX__WEBPACK_IMPORTED_MODULE_1__[\"default\"](url, options);\n    const response = ajaxRequest.waitForRequest(this.handleErrors.bind(this));\n    return response;\n  }\n\n  handleErrors(response) {\n    if (response.status != 200) {\n      throw new SyntaxError(\"Empty results from the NEWS API server\");\n    } else {\n      return response.json();\n    }\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (NewsModel);\n\n//# sourceURL=webpack:///./src/js/news/NewsModel.js?");
 
 /***/ }),
 

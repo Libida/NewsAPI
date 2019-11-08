@@ -1,24 +1,23 @@
 import Modal from "../modal/Modal";
+import AJAX from "../ajax/AJAX";
 
 class NewsModel {
-    async getNews(category) {
+    async getNews(category, options) {
         const url = `https://newsapi.org/v2/everything?q=${category}&sortBy=popularity&apiKey=a1e2ae38e5ff42f1aa3175998837d6ca&from=2019-10-24&to=2019-10-24`;
 
-        let promise = fetch(url).then(
-            successResponse => {
-                if (successResponse.status != 200) {
-                    throw new SyntaxError("Empty results from the NEWS API server");
-                } else {
-                    return successResponse.json();
-                }
-            }
-        ).catch(
-            error => {
-                new Modal(error);
-            }
-        );
+        const ajaxRequest = new AJAX(url, options);
+        const response = ajaxRequest.waitForRequest(this.handleErrors.bind(this));
 
-        return promise;
+        return response;
+    }
+
+
+    handleErrors(response) {
+        if (response.status != 200) {
+            throw new SyntaxError("Empty results from the NEWS API server");
+        } else {
+            return response.json();
+        }
     }
 }
 
