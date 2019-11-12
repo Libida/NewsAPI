@@ -1,0 +1,85 @@
+Part 3
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+3.1. How many “Chinese” (cuisine) restaurants are in “Queens” (borough)?
+
+db.restaurants.find({ borough: "Queens", cuisine: "Chinese" }).count()
+Result: 728
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+3.2. What is the _id of the restaurant which has the grade with the highest ever score?
+
+db.restaurants.find(false, {_id: 1}).sort({"grades.score": -1}).limit(1)
+
+Result: { "_id" : ObjectId("5dc85c93dc9a25f324767ae9") }
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+3.3. Add a grade { grade: "A", score: 7, date: ISODate() } to every restaurant in “Manhattan” (borough).
+
+Comments: changed text from "A" to "MashaSinkevich" to be sure that it was updated.
+
+db.restaurants.updateMany(
+   { borough: "Manhattan" },
+   { $push: {grades: { grade: "MashaSinkevich", score: 7, date: ISODate() }}}
+)
+
+Result:
+{ "acknowledged" : true, "matchedCount" : 10259, "modifiedCount" : 10259 }
+
+Check:
+db.restaurants.find({ borough: "Manhattan" })
+
+Part of result:
+{ "_id" : ObjectId("5dc85c93dc9a25f3247679c6"), "address" : { "building" : "1", "coord" : [ -73.97166039999999, 40.764832 ], "street" : "East   60 Street", "zipcode" : "10022" }, "borough" : "Manhattan", "cuisine" : "American", "grades" : [ { "date" : ISODate("2014-10-16T00:00:00Z"), "grade" : "B", "score" : 24 }, { "date" : ISODate("2014-05-02T00:00:00Z"), "grade" : "A", "score" : 4 }, { "date" : ISODate("2013-04-02T00:00:00Z"), "grade" : "A", "score" : 13 }, { "date" : ISODate("2012-10-19T00:00:00Z"), "grade" : "A", "score" : 12 }, { "date" : ISODate("2012-04-27T00:00:00Z"), "grade" : "B", "score" : 17 }, { "date" : ISODate("2011-11-29T00:00:00Z"), "grade" : "A", "score" : 11 }, { "grade" : "MashaSinkevich", "score" : 7, "date" : ISODate("2019-11-11T17:53:19.212Z") } ], "name" : "Metropolitan Club", "restaurant_id" : "40364347" }
+{ "_id" : ObjectId("5dc85c93dc9a25f3247679c7"), "address" : { "building" : "837", "coord" : [ -73.9712, 40.751703 ], "street" : "2 Avenue", "zipcode" : "10017" }, "borough" : "Manhattan", "cuisine" : "American", "grades" : [ { "date" : ISODate("2014-07-22T00:00:00Z"), "grade" : "B", "score" : 19 }, { "date" : ISODate("2013-09-26T00:00:00Z"), "grade" : "A", "score" : 12 }, { "date" : ISODate("2013-02-26T00:00:00Z"), "grade" : "A", "score" : 11 }, { "date" : ISODate("2012-04-30T00:00:00Z"), "grade" : "A", "score" : 8 }, { "date" : ISODate("2011-10-05T00:00:00Z"), "grade" : "A", "score" : 12 }, { "grade" : "MashaSinkevich", "score" : 7, "date" : ISODate("2019-11-11T17:53:19.212Z") } ], "name" : "Palm Restaurant", "restaurant_id" : "40364355" }
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+3.4. What are the names of the restaurants which have a grade at index 8 with score less then 7? Use projection to include only names without _id.
+
+db.restaurants.find({ "grades.8.score": { $lt: 7 } }, { name: 1, _id: 0 })
+
+Result:
+{ "name" : "Silver Krust West Indian Restaurant" }
+{ "name" : "Pure Food" }
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+3.5. What are _id and borough of “Seafood” (cuisine) restaurants which received at least one “B” grade in period from 2014-02-01 to 2014-03-01? Use projection to include only _id and borough.
+
+db.restaurants.find({ "cuisine": "Seafood",  grades: {$elemMatch: {grade: "B", date: { $gte: ISODate("2014-02-01T00:00:00Z"), $lt: ISODate("2014-04-01T00:00:00Z")}}} }, { borough: 1 })
+
+Result:
+{ "_id" : ObjectId("5dc85c93dc9a25f32476aee8"), "borough" : "Bronx" }
+{ "_id" : ObjectId("5dc85c93dc9a25f32476b15e"), "borough" : "Manhattan" }
+{ "_id" : ObjectId("5dc85c93dc9a25f32476bbca"), "borough" : "Manhattan" }
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+Part 4
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+4.1. Create an index which will be used by this query and provide proof (from explain() or Compass UI) that the index
+is indeed used by the winning plan:
+
+db.restaurants.find({ name: "Glorious Food" })
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+4.2.Drop index from task 4.1.
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+4.3.Create an index to make this query covered and provide proof (from explain() or CompassUI) that it is
+indeed covered:
+
+db.restaurants.find({ restaurant_id: "41098650" }, { _id: 0, borough: 1 })
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+4.4. Create a partial index on cuisine field which will be used only when filtering on borough equal
+to “Staten Island”:
+
+db.restaurants.find({ borough: "Staten Island", cuisine: "American"}) – uses index
+
+db.restaurants.find({ borough: "Staten Island", name: "Bagel Land" }) – does not use index
+
+db.restaurants.find({ borough: "Queens", cuisine: "Pizza" }) – does not use index
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+4.5.Create an index to make query from task 3.4 covered and provide proof(from explain()or Compass UI)
+that it is indeed covered.
