@@ -2,7 +2,7 @@ import Modal from "../modal/Modal";
 
 let idCounter = 1;
 
-class Ajax {
+export default class Ajax {
     constructor(options = {}) {
         this.id = idCounter++;
         this.promiseRequest = this.makeRequest(options);
@@ -44,5 +44,3 @@ class Ajax {
         }
     }
 }
-
-export default Ajax;

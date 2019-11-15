@@ -3,7 +3,7 @@ import SpinnerController from "./SpinnerController";
 
 let instance;
 
-class Spinner {
+export default class Spinner {
     constructor() {
         if (!instance) {
             instance = this;
@@ -14,5 +14,3 @@ class Spinner {
         return instance;
     }
 }
-
-export default Spinner;

@@ -3,7 +3,7 @@ import ModalController from "./ModalController";
 
 let instance = null;
 
-class Modal {
+export default class Modal {
     constructor(text) {
         if (!instance) {
             instance = this;
@@ -17,5 +17,3 @@ class Modal {
         return instance;
     }
 }
-
-export default Modal;

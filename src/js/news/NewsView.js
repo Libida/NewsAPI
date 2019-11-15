@@ -2,7 +2,7 @@ import Spinner from "../spinner/Spinner";
 import Dropdown from "../dropdown/Dropdown";
 import {NEWS_CATEGORIES_DROPDOWN_ID, NEWS_CONTAINER_ID, NO_IMG_URL} from "../constants";
 
-class NewsView {
+export default class NewsView {
     constructor() {
         this.container = document.getElementById(NEWS_CONTAINER_ID);
         this.dropdown = new Dropdown(NEWS_CATEGORIES_DROPDOWN_ID);
@@ -37,5 +37,3 @@ class NewsView {
         this.container.innerHTML = "";
     }
 }
-
-export default NewsView;

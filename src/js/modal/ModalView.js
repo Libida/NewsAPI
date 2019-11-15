@@ -1,7 +1,7 @@
 import {MODAL_ID, MODAL_TEXT_ID, MODAL_CLOSE_ID, HIDDEN_CLASS} from "../constants";
 import Backdrop from "../backdrop/Backdrop";
 
-class ModalView {
+export default class ModalView {
     constructor(text) {
         this.create();
 
@@ -37,5 +37,3 @@ class ModalView {
     }
 
 }
-
-export default ModalView;

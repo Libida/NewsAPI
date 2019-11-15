@@ -1,6 +1,6 @@
 import {HIDDEN_CLASS} from "../constants";
 
-class SpinnerController {
+export default class SpinnerController {
     constructor(view) {
         this.view = view;
     }
@@ -17,5 +17,3 @@ class SpinnerController {
         if (callbackAfter) callbackAfter();
     };
 }
-
-export default SpinnerController;

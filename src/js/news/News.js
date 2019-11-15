@@ -3,12 +3,10 @@ import NewsView from "./NewsView";
 import NewsController from "./NewsController";
 import NewsModel from "./NewsModel";
 
-class News {
+export default class News {
     constructor(options) {
         this.model = new NewsModel();
         this.view = new NewsView();
         this.controller = new NewsController(this.model, this.view, options);
     }
 }
-
-export default News;

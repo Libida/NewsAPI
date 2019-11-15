@@ -1,6 +1,6 @@
 import {HIDDEN_CLASS} from "../constants";
 
-class ModalController {
+export default class ModalController {
     constructor(view) {
         this.view = view;
         this.initListeners();
@@ -22,5 +22,3 @@ class ModalController {
     }
 
 }
-
-export default ModalController;

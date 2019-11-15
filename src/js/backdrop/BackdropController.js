@@ -1,6 +1,6 @@
 import {HIDDEN_CLASS} from "../constants";
 
-class BackdropController {
+export default class BackdropController {
     constructor(view) {
         this.view = view;
     }
@@ -13,5 +13,3 @@ class BackdropController {
         this.view.backdrop.classList.add(HIDDEN_CLASS);
     }
 }
-
-export default BackdropController;

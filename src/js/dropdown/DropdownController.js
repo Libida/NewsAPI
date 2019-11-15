@@ -1,4 +1,4 @@
-class DropdownController {
+export default class DropdownController {
     constructor(view, callbacksObj) {
         this.view = view;
         this.addListeners(callbacksObj);
@@ -12,5 +12,3 @@ class DropdownController {
         }
     }
 }
-
-export default DropdownController;

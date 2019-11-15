@@ -4,7 +4,7 @@ import BackdropController from "./BackdropController";
 
 let instance = null;
 
-class Backdrop {
+export default class Backdrop {
     constructor(text) {
         if (!instance) {
             instance = this;
@@ -15,5 +15,3 @@ class Backdrop {
         return instance;
     }
 }
-
-export default Backdrop;

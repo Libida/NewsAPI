@@ -1,7 +1,7 @@
 import {NEWS_CONTAINER_ID, NO_IMG_URL} from "../constants";
 import Modal from "../modal/Modal";
 
-class NewsController {
+export default class NewsController {
     constructor(model, view, options = {}) {
         this.model = model;
         this.view = view;
@@ -29,5 +29,3 @@ class NewsController {
         this.view.spinner.controller.finishLoading();
     }
 }
-
-export default NewsController;
