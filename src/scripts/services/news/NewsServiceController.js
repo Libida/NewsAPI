@@ -1,7 +1,4 @@
-import {NEWS_CONTAINER_ID, NO_IMG_URL} from "../constants";
-import Modal from "../modal/Modal";
-
-export default class NewsController {
+export default class NewsServiceController {
     constructor(model, view, options = {}) {
         this.model = model;
         this.view = view;
@@ -17,15 +14,15 @@ export default class NewsController {
     }
 
     async updateNews(e) {
-        this.view.spinner.controller.startLoading(this.view.clearNews.bind(this.view));
+        this.view.startLoading();
 
         const promise = this.model.getNews(e.target.value, {
-            withDebug: true,
+            withLogging: true,
             method: "GET"
         });
         const results = await promise || {};
         this.view.appendNews(results.articles);
 
-        this.view.spinner.controller.finishLoading();
+        this.view.finishLoading();
     }
 }

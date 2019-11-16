@@ -1,4 +1,3 @@
-import {BACKDROP_ID, HIDDEN_CLASS} from "../constants";
 import BackdropView from "./BackdropView";
 import BackdropController from "./BackdropController";
 

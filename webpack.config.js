@@ -31,7 +31,7 @@ const ghpages = require("gh-pages");
 
 module.exports = {
     mode: "development",
-    entry: "./src/js/app",
+    entry: "./src/scripts/app",
 
     output: {
         filename: "[name].js",
@@ -42,7 +42,7 @@ module.exports = {
         new webpack.ProgressPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: "./src/pug/start.pug",
+            template: "./src/templates/start.pug",
             title: "Page Title"
         }),
         new MiniCssExtractPlugin({
@@ -55,7 +55,7 @@ module.exports = {
         rules: [
             {
                 test: /.(js|jsx)$/,
-                include: [path.resolve(__dirname, "src/js")],
+                include: [path.resolve(__dirname, "src/scripts")],
                 loader: "babel-loader",
 
                 options: {

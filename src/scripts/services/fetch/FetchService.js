@@ -1,8 +1,9 @@
-import Modal from "../modal/Modal";
+import Modal from "../../components/modal/Modal";
+import { logToConsole } from "../../utils/logger";
 
 let idCounter = 1;
 
-export default class Ajax {
+export default class FetchService {
     constructor(options = {}) {
         this.id = idCounter++;
         this.promiseRequest = this.makeRequest(options);
@@ -11,7 +12,8 @@ export default class Ajax {
     async makeRequest(options) {
         let proxiedFetch = new Proxy(fetch, {
             apply: (target, thisArg, args) => {
-                this.debug(target, thisArg, args);
+                logToConsole(args[1], `Fetch №${this.id} `);
+
                 return target.apply(thisArg, args);
             }
         });
@@ -29,18 +31,6 @@ export default class Ajax {
         }
         catch(error) {
             new Modal(error);
-        }
-    }
-
-    debug(target, thisArg, args) {
-        const options = args[1];
-
-        if (options.withDebug) {
-            console.info("----------------------------------------------------");
-            for (let i in options) {
-                console.info(`Fetch №${this.id} ${i}: ${options[i]}`);
-            }
-            console.info("----------------------------------------------------");
         }
     }
 }

@@ -1,4 +1,4 @@
-import {HIDDEN_CLASS} from "../constants";
+import {HIDDEN_CLASS} from "../../constants/class-names";
 
 export default class SpinnerController {
     constructor(view) {
@@ -7,13 +7,13 @@ export default class SpinnerController {
 
     startLoading(callbackBefore, callbackAfter) {
         if (callbackBefore) callbackBefore();
-        this.view.spinner.classList.remove(HIDDEN_CLASS);
+        this.view.show();
         if (callbackAfter) callbackAfter();
     };
 
     finishLoading(callbackBefore, callbackAfter) {
         if (callbackBefore) callbackBefore();
-        this.view.spinner.classList.add(HIDDEN_CLASS);
+        this.view.hide();
         if (callbackAfter) callbackAfter();
     };
 }

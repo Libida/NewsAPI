@@ -1,4 +1,4 @@
-import {HIDDEN_CLASS} from "../constants";
+import {HIDDEN_CLASS} from "../../constants/class-names";
 
 export default class ModalController {
     constructor(view) {
