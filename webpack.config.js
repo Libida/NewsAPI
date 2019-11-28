@@ -35,7 +35,8 @@ module.exports = {
 
     output: {
         filename: "[name].js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "dist"),
+        publicPath: '/',
     },
 
     plugins: [
