@@ -5,10 +5,16 @@ block vars
 
 block content
 
-    +form({action: "/login"})
+    .auth
+        .auth-local
+            +form({action: "/login"})
 
-        +inputEmail()
+                +inputEmail()
 
-        +inputPassword()
+                +inputPassword()
 
-        +formBtn
+                +formBtn
+
+        .auth-fb
+            p.auth-fb-msg Or log in using Facebook
+            .fb-login-button(data-width="300" data-size="small" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="true")

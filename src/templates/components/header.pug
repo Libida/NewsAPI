@@ -7,6 +7,7 @@ header.header
             +headerItem({href: "login", text: "Login"})
             +headerItem({href: "signup", text: "Sign up"})
         if isLoggedIn
-            if user
-                +headerItem({text: `Hello ${user.local.email}`, href: "profile"})
-            +headerItem({href: "logout", text: "Log out"})
+            - const email = (user.local && user.local.email) || (user.facebook && user.facebook.email);
+                if user
+                    +headerItem({text: `Hello ${email}`, href: "profile"})
+                +headerItem({href: "logout", text: "Log out"})

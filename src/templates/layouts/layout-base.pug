@@ -8,6 +8,9 @@ html
         title=pageTitle
         link(rel="stylesheet", href="/main.css")
     body
+        div#fb-root
+            script(async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v5.0&appId=2411305602419916&autoLogAppEvents=1")
+
         include ../components/header
 
         main
@@ -23,4 +26,4 @@ html
 
             block content
 
-        script(src="/main.js")
+        include ../partials/scripts

@@ -1,4 +1,5 @@
 const express = require("express");
+const https = require("https");
 const passport = require("passport");
 const flash = require("connect-flash");
 const chalk = require("chalk"); //coloring
@@ -16,6 +17,7 @@ const webpackConfig = require("./webpack.config");
 const compiler = webpack(webpackConfig);
 const config = require("./config/properties")(app);
 const expressPort = config.PORT;
+// TODO: add https for Login/Register
 
 require("./config/db")(app, config, colors);
 
@@ -35,6 +37,7 @@ app.use(session({ secret: "masha" })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+app.enable("trust proxy");
 
 // Static files middleware
 app.use(express.static("./dist"));

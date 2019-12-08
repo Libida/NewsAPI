@@ -1,0 +1,16 @@
+.auth {
+  display: flex;
+}
+
+.auth-local {
+  border-right: $border-1;
+  padding-right: $distance-1;
+}
+
+.auth-fb {
+  margin-left: $distance-1;
+}
+
+.auth-fb-msg {
+  margin-top: 0;
+}

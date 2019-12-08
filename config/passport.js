@@ -2,7 +2,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const User = require("./../src/scripts/db/models/user");
 const UserController = require("./../src/scripts/db/controllers/user");
-const configAuth = require("./auth"); // use this one for testing
+const configAuth = require("./auth");
 
 module.exports = function (passport) {
     const passportDefaultOptions = {
@@ -30,7 +30,6 @@ module.exports = function (passport) {
     fbStrategy.passReqToCallback = true;  // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     passport.use(new FacebookStrategy(fbStrategy,
         function (req, token, refreshToken, profile, done) {
-
             // asynchronous
             process.nextTick(function () {
 
