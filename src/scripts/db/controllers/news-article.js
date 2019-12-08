@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const {createLogger, format, transports} = require("winston");
 const {combine, timestamp, label, prettyPrint} = format;
 const NewsArticle = require("../models/news-article");
@@ -62,17 +61,17 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
     const id = req.body.newsArticleId;
-    const isValid = validateNewsArticleId({id, req});
+    const isValid = validateNewsArticleId({id, req, res});
 
     if (!isValid) return;
 
-    // NewsArticle.findByIdAndRemove(id)
-    //     .then(newsArticle => {
-    //         checkNewsArticle({req, res, newsArticle});
-    //         handleSuccess({req, res, txt: "Deleted"})
-    //     }).catch(err => {
-    //     catchNewsArticleError({req, res, err, txt: "deleting"});
-    // });
+    NewsArticle.findByIdAndRemove(id)
+        .then(newsArticle => {
+            checkNewsArticle({req, res, newsArticle});
+            handleSuccess({req, res, txt: "Deleted"})
+        }).catch(err => {
+        catchNewsArticleError({req, res, err, txt: "deleting"});
+    });
 };
 
 function validateNewsArticle(options = {}) {
@@ -104,7 +103,7 @@ function populateNewsArticle(options = {}) {
 function getNewsArticleError404(options = {}) {
     const {req = {}, res = {}, id = req.body.newsArticleId} = options;
 
-    req.flash("error", `News Article with id ${id} was not found`);
+    req.flash("error", `News Article with id:${id} was not found`);
 }
 
 function checkNewsArticle(options = {}) {
@@ -129,20 +128,25 @@ function catchNewsArticleError(options = {}) {
 function handleSuccess(options = {}) {
     const {req = {}, res = {}, txt = "", id = req.body.newsArticleId} = options;
 
-    req.flash("success", `${txt} news article with id  ${id} successfully`);
-    res.redirect("/profile");
+    req.flash("success", `${txt} news article with id:${id} successfully`);
+    goToAdminPage(res);
 }
 
 function validateNewsArticleId(options = {}) {
-    const {id, req} = options;
+    const {id, req, res} = options;
     const isValid = mongoose.Types.ObjectId.isValid(id);
     console.log(`isValid ${id} = ${isValid}`);
 
     if (!isValid) {
-        req.flash("error", `News Article with id ${id} has invalid news article id`);
+        req.flash("error", `News Article with id:${id} has invalid news article id`);
+        goToAdminPage(res);
     }
 
     return isValid;
+}
+
+function goToAdminPage(res) {
+    res.redirect("/profile");
 }
 
 function addLogging(options = {}) {
