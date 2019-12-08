@@ -1,2 +1,12 @@
 header.header
-    h1.header-title News Portal
+    a(href="/").header-title-link
+        h1.header-title News Portal
+
+    .header-main
+        if !isLoggedIn
+            +headerItem({href: "login", text: "Login"})
+            +headerItem({href: "signup", text: "Sign up"})
+        if isLoggedIn
+            if user
+                +headerItem({text: `Hello ${user.local.email}`, isDisabled: true})
+            +headerItem({href: "logout", text: "Log out"})

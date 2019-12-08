@@ -1,46 +1,48 @@
 const express = require("express");
+const passport = require("passport");
+const flash = require("connect-flash");
+const chalk = require("chalk"); //coloring
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const session = require("express-session");
+const successColor = chalk.bold.cyan;
+const errorColor = chalk.bold.red;
+const colors = {successColor, errorColor};
+const app = express();
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
-const mongoose = require("mongoose");
 const webpackConfig = require("./webpack.config");
-const chalk = require("chalk"); //coloring
-const config = require("./config/properties");
-const app = express();
 const compiler = webpack(webpackConfig);
-const expressPort = config.port;
-const dbURL = config.DB;
-const connectedColor = chalk.bold.cyan;
-const errorColor = chalk.bold.red;
+const config = require("./config/properties")(app);
+const expressPort = config.PORT;
 
-// Tell express to use the webpack-dev-middleware and use the webpack.config.js
-// configuration file as a base.
+// require("./config/pages")(app);
+require("./config/db")(app, config, colors);
+
+require("./config/passport")(passport);
+
 app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
 }));
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser()); // get information from html forms
+app.set("views", "./src/templates/");
+app.set("view engine", "pug");
 
-// Parse requests of content-type - application/json
-app.use(bodyParser.json());
+// required for passport
+app.use(session({ secret: "masha" })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
-mongoose.Promise = global.Promise;
+// Static files middleware
+app.use(express.static("./dist"));
 
-// Connecting to the database
-mongoose.connect(dbURL, {
-    useNewUrlParser: true
-}).then(() => {
-    console.log(connectedColor(`Successfully connectedColor to the database on ${dbURL}`));
-}).catch(err => {
-    console.log(errorColor("Could not connect to the database. Exiting now..."), err);
-    process.exit();
-});
+require("./config/routes")(app, passport);
 
-// Require routes for News Articles
-require("./src/db/routes/news-article.routes")(app);
-
-// Serve the files on port 3000.
+// Serve the files
 app.listen(expressPort, (req, res) => {
     console.log(`News API app listening on port ${expressPort}!\n`);
 });
+

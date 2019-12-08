@@ -16,9 +16,7 @@ const devMode = process.env.NODE_ENV !== "production";
  */
 
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ghpages = require("gh-pages");
 
 /*
  * We've enabled HtmlWebpackPlugin for you! This generates a html
@@ -36,16 +34,12 @@ module.exports = {
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "dist"),
-        publicPath: '/',
+        publicPath: "/",
     },
 
     plugins: [
         new webpack.ProgressPlugin(),
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            template: "./src/templates/start.pug",
-            title: "Page Title"
-        }),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css",
@@ -87,11 +81,7 @@ module.exports = {
                     "postcss-loader",
                     "sass-loader",
                 ],
-            },
-            {
-                test: /\.pug$/,
-                use: ["pug-loader"]
-            },
+            }
         ]
     },
 
@@ -109,12 +99,5 @@ module.exports = {
             minSize: 30000,
             name: true
         }
-    },
-
-    devServer: {
-        open: true
     }
 };
-
-ghpages.publish('dist', function (err) {
-});

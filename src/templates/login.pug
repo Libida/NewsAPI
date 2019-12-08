@@ -1,0 +1,14 @@
+extends layouts/layout-base
+
+block vars
+    - const pageTitle = "Login"
+
+block content
+
+    +form({action: "/login"})
+
+        +inputEmail()
+
+        +inputPassword()
+
+        +formBtn

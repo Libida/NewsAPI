@@ -1,0 +1,11 @@
+.form-control {
+  & + & {
+    margin-top: $distance-2;
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: $distance-2/4;
+  text-transform: capitalize;
+}

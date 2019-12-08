@@ -1,0 +1,38 @@
+mixin articleNews(options = {})
+    - const {title, noControls, isAdmin} = options;
+
+        article.news(class=isAdmin && "news--admin")
+            header.header--news
+                h2.news-title=title
+
+                if !noControls
+                    .header-main
+                        if isLoggedIn
+                            +headerItem({href: "profile-add-news", text: "Add news article"})
+                            +headerItem({href: "profile-delete-news", text: "Delete news article"})
+
+            block
+
+
+mixin articleNewsAll(options = {})
+    include ../components/spinner
+
+    +articleNews(Object.assign({}, {title: "All news"}, options))
+        .news-container
+            +spinner#global-spinner
+            .news-container-inner#news-container
+
+
+mixin articleNewsAdd(options = {})
+    +articleNews({title: "Add news article", noControls: true, isAdmin: true})
+        +form({action: "/profile-add-news"})
+            +input({id: "news-author", name: "author"})
+            +input({id: "news-title", name: "title"})
+            +textarea({id: "news-description", name: "description"})
+            +input({id: "news-url", name: "url"})
+            +input({id: "news-url-img", name: "urlToImage", label: "image URL"})
+            +formBtn
+
+
+mixin articleNewsDelete(options = {})
+    +articleNews({title: "Delete news article", noControls: true, isAdmin: true})

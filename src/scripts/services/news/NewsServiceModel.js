@@ -1,8 +1,7 @@
 import FetchService from "../fetch/FetchService";
 
 export default class NewsServiceModel {
-    async getNews(category, options) {
-        // options.url = `https://newsapi.org/v2/everything?q=${category}&sortBy=popularity&apiKey=a1e2ae38e5ff42f1aa3175998837d6ca&from=2019-11-24&to=2019-11-24`;
+    async getNews(options) {
         options.url = "/news-articles";
 
         const ajaxRequest = new FetchService(options);

@@ -1,0 +1,7 @@
+extends layouts/layout-base
+
+block vars
+    - const pageTitle = "News API admin page";
+
+block content
+    +articleNewsAll({isAdmin: true})

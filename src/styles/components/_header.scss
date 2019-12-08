@@ -2,4 +2,29 @@
   padding: $distance-1;
   background-color: black;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title-link {
+  text-decoration: none;
+  color: white
+}
+
+.header-main-item {
+  display: inline-block;
+
+  .header:not(.header--news) & {
+    color: white;
+  }
+
+  & + & {
+    margin-left: $distance-2;
+  }
+
+  &.disabled {
+    text-decoration: none;
+    cursor: default;
+  }
 }

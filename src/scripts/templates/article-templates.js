@@ -1,10 +1,11 @@
 import {NO_IMG_URL} from "../constants/strings";
 
 export function getArticleTemplate(article) {
-    const {url, urlToImage, title, description} =  article;
+    const {_id, url, urlToImage, title, description} =  article;
 
     return `
             <article class="news-article">
+                <p class="news-article-id">id: ${_id}</p>
                 <a class="news-article-link" href="${url}" target="_blank">
                     <div class="news-article-additional-content">
                         <img class="news-article-img" src="${urlToImage || NO_IMG_URL}" alt="${title}">

@@ -1,0 +1,9 @@
+.alert {
+  padding: $distance-2;
+  margin-bottom: $distance-2;
+}
+
+.alert-danger {
+  background-color: red;
+  color: darkred;
+}

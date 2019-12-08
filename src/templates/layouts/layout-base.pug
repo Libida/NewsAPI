@@ -1,0 +1,24 @@
+include ../mixins/mixins
+
+html
+    block vars
+
+    head
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title=pageTitle
+        link(rel="stylesheet", href="/main.css")
+    body
+        include ../components/header
+
+        main
+            h1=pageTitle
+
+            if (errors && errors.length)
+                each error in errors
+                    .alert.alert-danger=error
+
+                success
+
+            block content
+
+        script(src="/main.js")

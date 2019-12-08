@@ -1,0 +1,5 @@
+mixin headerItem(options = {})
+    - let {href, text, isDisabled} = options;
+    - href = isDisabled ? "" : href;
+
+        a(href=href class=isDisabled &&"disabled").header-main-item=text

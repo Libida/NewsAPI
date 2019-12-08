@@ -1,5 +1,17 @@
 .news {
   margin-top: $distance-1;
+
+  &:not(.news--admin) {
+    .news-article-id {
+      display: none;
+    }
+  }
+
+  &.news--admin {
+    .news-article {
+      border-top: 1px solid gray;
+    }
+  }
 }
 
 .news-container {
@@ -10,6 +22,7 @@
 .news-article {
   position: relative;
   margin-top: $distance-2;
+  padding: $distance-2 0;
 }
 
 .news-article-link {

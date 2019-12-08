@@ -1,0 +1,16 @@
+extends layouts/layout-base
+
+block vars
+    - const pageTitle = "Sign up";
+
+block content
+
+    +form({action: "/signup"})
+        +inputEmail()
+
+        +inputPassword({
+            id: "password",
+            name: "password"
+        })
+
+        +formBtn

@@ -1,6 +1,6 @@
 const {createLogger, format, transports} = require("winston");
 const {combine, timestamp, label, prettyPrint} = format;
-const NewsArticle = require("../models/news-article.model");
+const NewsArticle = require("../models/news-article");
 const logger = createLogger({
     level: "info",
     format: combine(
@@ -14,30 +14,26 @@ const logger = createLogger({
     ]
 });
 
-// Create and save new news article
 exports.create = (req, res) => {
     validateNewsArticle({req, res});
 
-    // Create News Article
     const newsArticle = new NewsArticle(populateNewsArticle({req}));
 
-    // Save News Article in the database
     newsArticle.save().then(data => {
-            res.send(data)
+        res.redirect("/profile");
         }
     ).catch(err => {
-        res.status(500).send({
-            message: err.message || "Error occured white creating the News Article"
-        });
+        const msg = err.message || "Error occured while creating the News Article";
+        res.locals.errors = msg;
+        // res.status(500).send({
+        //     message: msg
+        // });
     });
 };
 
-// Retrieve and return all news articles from the database
 exports.findAll = (req, res) => {
     NewsArticle.find().then(newsArticles => {
         res.send(newsArticles);
-        addLogging({req, res});
-
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Error occured white creating the News Article"
@@ -45,9 +41,9 @@ exports.findAll = (req, res) => {
     })
 };
 
-// Find a single news article by id
 exports.findOne = (req, res) => {
     NewsArticle.findById(req.params.newsArticleId).then(newsArticle => {
+
         checkNewsArticle({req, res, newsArticle});
 
         res.send(newsArticle);
@@ -56,12 +52,9 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update news article by id
 exports.update = (req, res) => {
-    // Validate Request
     validateNewsArticle({req, res});
 
-    // Find news article and update it with the request body
     NewsArticle.findByIdAndUpdate(req.params.newsArticleId, populateNewsArticle({req}), {new: true})
         .then(newsArticle => {
             checkNewsArticle({req, res, newsArticle});
@@ -71,7 +64,6 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete news article by id
 exports.delete = (req, res) => {
     NewsArticle.findByIdAndRemove(req.params.newsArticleId)
         .then(newsArticle => {
@@ -84,29 +76,27 @@ exports.delete = (req, res) => {
 
 function validateNewsArticle(options = {}) {
     const {req = {}, res = {}} = options;
+    const newsArticle = req.body;
 
-    // Validate request
-    if (!req.body.description) {
-        return res.status(400).send({
-            message: "News Article description should not be empty"
-        });
+    if (!newsArticle.title) {
+        res.locals.errors = "News Article title should not be empty";
+    }
+
+    if (!newsArticle.description) {
+        res.locals.errors = "News Article description should not be empty";
     }
 }
 
 function populateNewsArticle(options = {}) {
     const {req = {}} = options;
     const reqBody = req.body || {};
-    const source = reqBody.source || {};
 
     return {
-        "source": {"id": source.id, "name": source.name},
         "author": reqBody.author,
         "title": reqBody.title,
         "description": reqBody.description,
         "url": reqBody.url,
-        "urlToImage": reqBody.urlToImage,
-        "publishedAt": reqBody.publishedAt,
-        "content": reqBody.content
+        "urlToImage": reqBody.urlToImage
     };
 }
 

@@ -5,10 +5,11 @@ export default class DropdownController {
     }
 
     addListeners(callbacksObj = {}) {
+        const dropdown = this.view.dropdown;
         const {changeCallback} = callbacksObj;
 
         if (changeCallback) {
-            this.view.dropdown.addEventListener("change", changeCallback);
+            dropdown && dropdown.addEventListener("change", changeCallback);
         }
     }
 }

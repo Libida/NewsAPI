@@ -1,0 +1,56 @@
+mixin form(options = {})
+    - const {method = "post", action = "/"} = options;
+    form.form(method=method action=action)
+        block
+
+
+mixin input(options = {})
+    - const {id, name, type = "text", autocomplete} = options;
+
+        +form-control({type: "input"})
+            +label(options)
+            input(type=type id=id name=`${name}`
+                placeholder=`Enter ${options.txt} here` autocomplete=autocomplete).input
+
+
+mixin textarea(options = {})
+    - const {id, name} = options;
+
+        +form-control({type: "textarea"})
+            +label(options)
+            textarea(id=id name=`${name}` placeholder=`Enter ${options.txt} here`).textarea
+
+
+mixin label(options = {})
+    - const {id, label, name} = options;
+    - options.txt = label || name;
+
+        label(for=id).label=options.txt
+
+mixin inputPassword(options = {})
+    +input(Object.assign({}, {
+        id: "password",
+        name: "password",
+        type: "password",
+        autocomplete: "password"
+    }, options))&attributes(attributes)
+
+
+mixin inputEmail(options = {})
+    +input(Object.assign({}, {
+        id: "email",
+        name: "email"
+    }, options))&attributes(attributes)
+
+
+mixin formBtn(options = {})
+    +form-control({type: "submit"})
+        button(type="submit") Submit
+
+
+mixin form-control(options = {})
+    - const {type} = options;
+    - const baseClass = "form-control";
+
+        div(class=[baseClass, type && `${baseClass}-${type}`])&attributes(attributes)
+            block
