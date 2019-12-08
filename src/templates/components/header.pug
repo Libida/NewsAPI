@@ -8,5 +8,5 @@ header.header
             +headerItem({href: "signup", text: "Sign up"})
         if isLoggedIn
             if user
-                +headerItem({text: `Hello ${user.local.email}`, isDisabled: true})
+                +headerItem({text: `Hello ${user.local.email}`, href: "profile"})
             +headerItem({href: "logout", text: "Log out"})

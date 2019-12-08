@@ -17,7 +17,9 @@ html
                 each error in errors
                     .alert.alert-danger=error
 
-                success
+            if (successMsgs && successMsgs.length)
+                each successMsg in successMsgs
+                    .alert.alert-success=successMsg
 
             block content
 

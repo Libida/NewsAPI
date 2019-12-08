@@ -36,3 +36,6 @@ mixin articleNewsAdd(options = {})
 
 mixin articleNewsDelete(options = {})
     +articleNews({title: "Delete news article", noControls: true, isAdmin: true})
+        +form({action: "/profile-delete-news", method: "delete"})
+            +input({id: "news-id", name: "newsArticleId", label: "news id"})
+            +formBtn

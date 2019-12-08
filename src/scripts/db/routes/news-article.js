@@ -3,7 +3,6 @@ module.exports = (app) => {
     const urlBase = "/news-articles";
     const urlWithId = `${urlBase}/:newsArticleId`;
 
-    // app.post(urlBase, newsArticleController.create);
     app.post("/profile-add-news", newsArticleController.create);
 
     app.get(urlBase, newsArticleController.findAll);
@@ -12,9 +11,6 @@ module.exports = (app) => {
 
     app.put(urlWithId, newsArticleController.update);
 
-    app.delete(urlWithId, newsArticleController.delete);
+    app.post("/profile-delete-news", newsArticleController.delete);
 
-    // app.get(urlBase, function(req, res) {
-    //     res.redirect(req.headers.referer);
-    // });
 };

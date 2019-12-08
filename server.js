@@ -5,6 +5,7 @@ const chalk = require("chalk"); //coloring
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const methodOverride = require("method-override");
 const successColor = chalk.bold.cyan;
 const errorColor = chalk.bold.red;
 const colors = {successColor, errorColor};
@@ -16,7 +17,6 @@ const compiler = webpack(webpackConfig);
 const config = require("./config/properties")(app);
 const expressPort = config.PORT;
 
-// require("./config/pages")(app);
 require("./config/db")(app, config, colors);
 
 require("./config/passport")(passport);
@@ -38,6 +38,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // Static files middleware
 app.use(express.static("./dist"));
+
+app.use(methodOverride("_method"));
 
 require("./config/routes")(app, passport);
 

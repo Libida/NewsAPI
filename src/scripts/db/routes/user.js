@@ -1,12 +1,6 @@
 module.exports = function(app, passport) {
     const passportAuth = passport.authenticate.bind(passport);
 
-    app.get("*", function(req,res,next){
-        res.locals.errors = req.flash("error");
-        res.locals.isLoggedIn = req.isAuthenticated();
-        next();
-    });
-
     app.get("/login", function(req, res) {
         deprecateForLoggedUser(req, res, "login");
     });

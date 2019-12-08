@@ -1,6 +1,12 @@
 mixin form(options = {})
-    - const {method = "post", action = "/"} = options;
+    - let {method = "post", action = "/"} = options;
+    - const isDelete = (method === "delete");
+    - method = isDelete ? "post" : method;
+
     form.form(method=method action=action)
+        if method === "delete"
+            input(type="hidden" name="_method" value="delete")
+
         block
 
 

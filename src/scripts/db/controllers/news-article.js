@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const {createLogger, format, transports} = require("winston");
 const {combine, timestamp, label, prettyPrint} = format;
 const NewsArticle = require("../models/news-article");
@@ -20,14 +22,10 @@ exports.create = (req, res) => {
     const newsArticle = new NewsArticle(populateNewsArticle({req}));
 
     newsArticle.save().then(data => {
-        res.redirect("/profile");
+            handleSuccess({req, res, txt: "Created", id: data._id})
         }
     ).catch(err => {
-        const msg = err.message || "Error occured while creating the News Article";
-        res.locals.errors = msg;
-        // res.status(500).send({
-        //     message: msg
-        // });
+        catchNewsArticleError({req, res, err, txt: "creating"});
     });
 };
 
@@ -42,36 +40,39 @@ exports.findAll = (req, res) => {
 };
 
 exports.findOne = (req, res) => {
-    NewsArticle.findById(req.params.newsArticleId).then(newsArticle => {
-
+    NewsArticle.findById(req.body).then(newsArticle => {
         checkNewsArticle({req, res, newsArticle});
-
         res.send(newsArticle);
     }).catch(err => {
-        catchNewsArticleError({req, res, err, msg500: "retrieving"});
+        catchNewsArticleError({req, res, err, txt: "retrieving"});
     });
 };
 
 exports.update = (req, res) => {
     validateNewsArticle({req, res});
 
-    NewsArticle.findByIdAndUpdate(req.params.newsArticleId, populateNewsArticle({req}), {new: true})
+    NewsArticle.findByIdAndUpdate(req.body, populateNewsArticle({req}), {new: true})
         .then(newsArticle => {
             checkNewsArticle({req, res, newsArticle});
             res.send(newsArticle);
         }).catch(err => {
-        catchNewsArticleError({req, res, err, msg500: "updating"});
+        catchNewsArticleError({req, res, err, txt: "updating"});
     });
 };
 
 exports.delete = (req, res) => {
-    NewsArticle.findByIdAndRemove(req.params.newsArticleId)
-        .then(newsArticle => {
-            checkNewsArticle({req, res, newsArticle});
-            res.send({message: `News article with id ${newsArticle} was deleted successfully!`});
-        }).catch(err => {
-        catchNewsArticleError({req, res, err, msg500: "deleting"});
-    });
+    const id = req.body.newsArticleId;
+    const isValid = validateNewsArticleId({id, req});
+
+    if (!isValid) return;
+
+    // NewsArticle.findByIdAndRemove(id)
+    //     .then(newsArticle => {
+    //         checkNewsArticle({req, res, newsArticle});
+    //         handleSuccess({req, res, txt: "Deleted"})
+    //     }).catch(err => {
+    //     catchNewsArticleError({req, res, err, txt: "deleting"});
+    // });
 };
 
 function validateNewsArticle(options = {}) {
@@ -101,19 +102,9 @@ function populateNewsArticle(options = {}) {
 }
 
 function getNewsArticleError404(options = {}) {
-    const {req = {}, res = {}} = options;
+    const {req = {}, res = {}, id = req.body.newsArticleId} = options;
 
-    return res.status(404).send({
-        message: `News Article with id ${req.params.newsArticleId} was not found`
-    });
-}
-
-function getNewsArticleError500(options = {}) {
-    const {req = {}, res = {}, msg500 = ""} = options;
-
-    return res.status(500).send({
-        message: `Error ${msg500} news article with id  ${req.params.newsArticleId}`
-    });
+    req.flash("error", `News Article with id ${id} was not found`);
 }
 
 function checkNewsArticle(options = {}) {
@@ -125,15 +116,33 @@ function checkNewsArticle(options = {}) {
 }
 
 function catchNewsArticleError(options = {}) {
-    const {req = {}, res = {}, err = {}, msg500 = ""} = options;
+    const {req = {}, res = {}, err = {}, txt = "", id = req.body.newsArticleId} = options;
 
     if (err.kind === "ObjectId" || err.name === "NotFound") {
         getNewsArticleError404(options);
     }
+    else {
+        req.flash("error", `Error ${txt} news article with id  id`);
+    }
+}
 
-    return res.status(500).send({
-        message: `Error ${msg500} news article with id  ${req.params.newsArticleId}`
-    });
+function handleSuccess(options = {}) {
+    const {req = {}, res = {}, txt = "", id = req.body.newsArticleId} = options;
+
+    req.flash("success", `${txt} news article with id  ${id} successfully`);
+    res.redirect("/profile");
+}
+
+function validateNewsArticleId(options = {}) {
+    const {id, req} = options;
+    const isValid = mongoose.Types.ObjectId.isValid(id);
+    console.log(`isValid ${id} = ${isValid}`);
+
+    if (!isValid) {
+        req.flash("error", `News Article with id ${id} has invalid news article id`);
+    }
+
+    return isValid;
 }
 
 function addLogging(options = {}) {
