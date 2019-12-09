@@ -30,19 +30,21 @@ exports.create = (req, res) => {
             message: err.message || "Error occured white creating the News Article"
         });
     });
+
+    addLogging({req, res});
 };
 
 // Retrieve and return all news articles from the database
 exports.findAll = (req, res) => {
     NewsArticle.find().then(newsArticles => {
         res.send(newsArticles);
-        addLogging({req, res});
-
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Error occured white creating the News Article"
         });
-    })
+    });
+
+    addLogging({req, res});
 };
 
 // Find a single news article by id
@@ -54,6 +56,8 @@ exports.findOne = (req, res) => {
     }).catch(err => {
         catchNewsArticleError({req, res, err, msg500: "retrieving"});
     });
+
+    addLogging({req, res});
 };
 
 // Update news article by id
@@ -69,6 +73,8 @@ exports.update = (req, res) => {
         }).catch(err => {
         catchNewsArticleError({req, res, err, msg500: "updating"});
     });
+
+    addLogging({req, res});
 };
 
 // Delete news article by id
@@ -80,6 +86,8 @@ exports.delete = (req, res) => {
         }).catch(err => {
         catchNewsArticleError({req, res, err, msg500: "deleting"});
     });
+
+    addLogging({req, res});
 };
 
 function validateNewsArticle(options = {}) {
