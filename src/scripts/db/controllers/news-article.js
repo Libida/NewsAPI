@@ -26,6 +26,8 @@ exports.create = (req, res) => {
     ).catch(err => {
         catchNewsArticleError({req, res, err, txt: "creating"});
     });
+
+    addLogging({req, res});
 };
 
 exports.findAll = (req, res) => {
@@ -35,7 +37,9 @@ exports.findAll = (req, res) => {
         res.status(500).send({
             message: err.message || "Error occured white creating the News Article"
         });
-    })
+    });
+
+    addLogging({req, res});
 };
 
 exports.findOne = (req, res) => {
@@ -45,6 +49,8 @@ exports.findOne = (req, res) => {
     }).catch(err => {
         catchNewsArticleError({req, res, err, txt: "retrieving"});
     });
+
+    addLogging({req, res});
 };
 
 exports.update = (req, res) => {
@@ -57,6 +63,8 @@ exports.update = (req, res) => {
         }).catch(err => {
         catchNewsArticleError({req, res, err, txt: "updating"});
     });
+
+    addLogging({req, res});
 };
 
 exports.delete = (req, res) => {
@@ -72,6 +80,8 @@ exports.delete = (req, res) => {
         }).catch(err => {
         catchNewsArticleError({req, res, err, txt: "deleting"});
     });
+
+    addLogging({req, res});
 };
 
 function validateNewsArticle(options = {}) {
