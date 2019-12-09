@@ -3,11 +3,10 @@ header.header
         h1.header-title News Portal
 
     .header-main
-        if !isLoggedIn
+        if !user
             +headerItem({href: "login", text: "Login"})
             +headerItem({href: "signup", text: "Sign up"})
-        if isLoggedIn
+        else
             - const email = (user.local && user.local.email) || (user.facebook && user.facebook.email);
-                if user
-                    +headerItem({text: `Hello ${email}`, href: "profile"})
+                +headerItem({text: `Hello ${email}`, href: "profile"})
                 +headerItem({href: "logout", text: "Log out"})

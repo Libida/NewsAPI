@@ -7,7 +7,7 @@ mixin articleNews(options = {})
 
                 if !noControls
                     .header-main
-                        if isLoggedIn
+                        if user
                             +headerItem({href: "profile-add-news", text: "Add news article"})
                             +headerItem({href: "profile-delete-news", text: "Delete news article"})
 
