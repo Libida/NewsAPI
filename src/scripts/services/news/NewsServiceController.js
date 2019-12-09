@@ -21,7 +21,7 @@ export default class NewsServiceController {
             method: "GET"
         });
         const results = await promise || {};
-        this.view.appendNews(results.articles);
+        this.view.appendNews(results);
 
         this.view.finishLoading();
     }

@@ -59,6 +59,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
-    "pug-loader": "^2.4.0"
+    "pug-loader": "^2.4.0",
+    "winston": "^3.2.1"
   }
 }

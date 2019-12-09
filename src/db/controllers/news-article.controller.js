@@ -1,4 +1,18 @@
+const {createLogger, format, transports} = require("winston");
+const {combine, timestamp, label, prettyPrint} = format;
 const NewsArticle = require("../models/news-article.model");
+const logger = createLogger({
+    level: "info",
+    format: combine(
+        label({label: "News articles Rest API"}),
+        timestamp(),
+        prettyPrint()
+    ),
+    defaultMeta: {service: "user-service"},
+    transports: [
+        new transports.File({filename: "./logs/combined.log"})
+    ]
+});
 
 // Create and save new news article
 exports.create = (req, res) => {
@@ -8,7 +22,9 @@ exports.create = (req, res) => {
     const newsArticle = new NewsArticle(populateNewsArticle({req}));
 
     // Save News Article in the database
-    newsArticle.save().then(data => { res.send(data)}
+    newsArticle.save().then(data => {
+            res.send(data)
+        }
     ).catch(err => {
         res.status(500).send({
             message: err.message || "Error occured white creating the News Article"
@@ -18,7 +34,11 @@ exports.create = (req, res) => {
 
 // Retrieve and return all news articles from the database
 exports.findAll = (req, res) => {
-    NewsArticle.find().then(newsArticles => { res.send(newsArticles);}).catch(err => {
+    NewsArticle.find().then(newsArticles => {
+        res.send(newsArticles);
+        addLogging({req, res});
+
+    }).catch(err => {
         res.status(500).send({
             message: err.message || "Error occured white creating the News Article"
         });
@@ -58,7 +78,7 @@ exports.delete = (req, res) => {
             checkNewsArticle({req, res, newsArticle});
             res.send({message: `News article with id ${newsArticle} was deleted successfully!`});
         }).catch(err => {
-            catchNewsArticleError({req, res, err, msg500: "deleting"});
+        catchNewsArticleError({req, res, err, msg500: "deleting"});
     });
 };
 
@@ -109,7 +129,7 @@ function getNewsArticleError500(options = {}) {
 function checkNewsArticle(options = {}) {
     const {req = {}, res = {}, newsArticle} = options;
 
-    if(!newsArticle) {
+    if (!newsArticle) {
         getNewsArticleError404(options);
     }
 }
@@ -117,11 +137,19 @@ function checkNewsArticle(options = {}) {
 function catchNewsArticleError(options = {}) {
     const {req = {}, res = {}, err = {}, msg500 = ""} = options;
 
-    if(err.kind === "ObjectId" || err.name === "NotFound") {
+    if (err.kind === "ObjectId" || err.name === "NotFound") {
         getNewsArticleError404(options);
     }
 
     return res.status(500).send({
         message: `Error ${msg500} news article with id  ${req.params.newsArticleId}`
+    });
+}
+
+function addLogging(options = {}) {
+    const {req = {}, res = {}, level = "info"} = options;
+    logger.log({
+        level: level,
+        message: req.url
     });
 }
