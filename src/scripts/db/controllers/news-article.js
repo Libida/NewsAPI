@@ -135,7 +135,6 @@ function handleSuccess(options = {}) {
 function validateNewsArticleId(options = {}) {
     const {id, req, res} = options;
     const isValid = mongoose.Types.ObjectId.isValid(id);
-    console.log(`isValid ${id} = ${isValid}`);
 
     if (!isValid) {
         req.flash("error", `News Article with id:${id} has invalid news article id`);

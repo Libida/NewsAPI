@@ -1,5 +1,7 @@
 const express = require("express");
 const https = require("https");
+const http = require("http");
+const fs = require("fs");
 const passport = require("passport");
 const flash = require("connect-flash");
 const chalk = require("chalk"); //coloring
@@ -17,7 +19,9 @@ const webpackConfig = require("./webpack.config");
 const compiler = webpack(webpackConfig);
 const config = require("./config/properties")(app);
 const expressPort = config.PORT;
-// TODO: add https for Login/Register
+const privateKey  = fs.readFileSync("sslcert/server.key", "utf8");
+const certificate = fs.readFileSync("sslcert/server.cert", "utf8");
+const credentials = {key: privateKey, cert: certificate};
 
 require("./config/db")(app, config, colors);
 
@@ -46,7 +50,13 @@ app.use(methodOverride("_method"));
 
 require("./config/routes")(app, passport);
 
-// Serve the files
+// const httpServer = http.createServer(app);
+// const httpsServer = https.createServer(credentials, app);
+
+// httpServer.listen(8080);
+// httpsServer.listen(8443);
+
+// // Serve the files
 app.listen(expressPort, (req, res) => {
     console.log(`News API app listening on port ${expressPort}!\n`);
 });
