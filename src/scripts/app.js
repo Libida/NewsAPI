@@ -1,4 +1,11 @@
-import "../styles/style.scss";
-import NewsService from "./services/news/NewsService";
+import React, { Component} from "react";
 
-new NewsService();
+export default class App extends Component{
+    render(){
+        return(
+            <div className="App">
+            <h1> Hello, World! </h1>
+        </div>
+    );
+    }
+}

@@ -20,18 +20,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ghpages = require("gh-pages");
 
-/*
- * We've enabled HtmlWebpackPlugin for you! This generates a html
- * page for you when you compile webpack, which will make you start
- * developing and prototyping faster.
- *
- * https://github.com/jantimon/html-webpack-plugin
- *
- */
-
 module.exports = {
     mode: "development",
-    entry: "./src/scripts/app",
+    entry: "./src/scripts/index",
 
     output: {
         filename: "[name].js",
@@ -61,16 +52,7 @@ module.exports = {
                 options: {
                     plugins: ["syntax-dynamic-import"],
 
-                    presets: [
-                        [
-                            "@babel/preset-env",
-                            {
-                                "targets": {
-                                    "node": "10"
-                                }
-                            }
-                        ]
-                    ]
+                    presets: ["@babel/env", "@babel/preset-react"]
                 }
             },
             {
@@ -115,5 +97,4 @@ module.exports = {
     }
 };
 
-ghpages.publish('dist', function (err) {
-});
+ghpages.publish("dist", function (err) {});
